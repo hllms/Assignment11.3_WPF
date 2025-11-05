@@ -1,0 +1,120 @@
+﻿<Window x:Class="Assignment11._3_WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Assignment11._3_WPF"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:models="clr-namespace:Assignment11._3_WPF.Models"
+        mc:Ignorable="d"
+        Title="Gear Tracker" Height="1000" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" 
+               Content="Outdoor Gear" 
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Center" 
+               Foreground="DarkGreen" 
+               FontSize="24"/>
+
+        <DataGrid Name="OutdoorGearGrid" 
+                  Grid.Row="1" 
+                  AutoGenerateColumns="False" 
+                  Margin ="5" 
+                  BorderBrush="Chocolate" 
+                  BorderThickness="3" 
+                  IsReadOnly="True">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
+                <DataGridTextColumn Header="Season" Binding="{Binding Season}"/>
+                <DataGridTextColumn Header="Condition" Binding="{Binding Condition}"/>
+                <DataGridTextColumn Header="Durable" Binding="{Binding IsDurable}"/>
+                <DataGridTextColumn Header="Price" Binding="{Binding Price, StringFormat=C}"/>
+                <DataGridTextColumn Header="Weight" Binding="{Binding WeightInPounds}"/>
+                <DataGridTextColumn Header="Notes" Binding="{Binding Notes}"/>
+                <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}"/>
+                <DataGridTextColumn Header="Purchase Yr" Binding="{Binding PurchaseDate, StringFormat=\{0:yyyy\}}" />
+                <DataGridTextColumn Header="Serial Number" Binding="{Binding SerialNumber}"/>
+                <DataGridTemplateColumn Header="Update Book">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Edit" Click="UpdateGearforEdit"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Delete Gear">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Delete" Click="DeleteGear"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row = "2">
+            <Border Grid.Column="0" BorderBrush="Violet" BorderThickness="2" Margin="3">
+                <StackPanel Margin="5">
+                    <Label Content="Add/Update From Inventory" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    <Grid Margin="5" Name="UpdateGearGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" Content="Id"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Id}"/>
+                        <Label Grid.Row="1" Grid.Column="0" Content="Name"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Name}"/>
+                        <Label Grid.Row="2" Grid.Column="0" Content="Type"/>
+                        <ComboBox ItemsSource="{Binding Source={x:Static models:GearType.Shelter}}" Grid.Row="2" Grid.Column="1" SelectedItem="{Binding Type}"/>
+                        <Label Grid.Row="3" Grid.Column="0" Content="Season"/>
+                        <ComboBox Grid.Row="3" Grid.Column="1" Text="{Binding Season}"/>
+                        <Label Grid.Row="4" Grid.Column="0" Content="Condition"/>
+                        <ComboBox Grid.Row="4" Grid.Column="1" Text="{Binding Condition}"/>
+                        <Label Grid.Row="5" Grid.Column="0" Content="Durable"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding IsDurable}"/>
+                        <Label Grid.Row="6" Grid.Column="0" Content="Price"/>
+                        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Price}"/>
+                        <Label Grid.Row="7" Grid.Column="0" Content="Weight lbs"/>
+                        <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding WeithInPounds}"/>
+                        <Label Grid.Row="8" Grid.Column="0" Content="Notes"/>
+                        <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding Notes}"/>
+                        <Label Grid.Row="9" Grid.Column="0" Content="Quantity"/>
+                        <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding Quantity}"/>
+                        <Label Grid.Row="10" Grid.Column="0" Content="Purchase Year"/>
+                        <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding PurchaseYear}"/>
+                        <Label Grid.Row="11" Grid.Column="0" Content="Serial Number"/>
+                        <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding SerialNumber}"/>
+                        <Button Grid.Row="12" Grid.ColumnSpan="2" Content="Add" Click="AddGear"/>
+                        <Button Grid.Row="13" Grid.ColumnSpan="2" Content="Update" Click="UpdateGear"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            
+        </Grid>
+    </Grid>
+</Window>
