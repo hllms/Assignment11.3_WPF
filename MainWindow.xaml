@@ -8,6 +8,27 @@
         xmlns:models="clr-namespace:Assignment11._3_WPF.Models"
         mc:Ignorable="d"
         Title="Gear Tracker" Height="1000" Width="800">
+    <Window.Resources>
+        <!-- Enum providers -->
+        <ObjectDataProvider x:Key="GearTypeValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:GearType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="SeasonTypeValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:SeasonType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="ConditionTypeValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:ConditionType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
@@ -41,7 +62,7 @@
                 <DataGridTextColumn Header="Weight" Binding="{Binding WeightInPounds}"/>
                 <DataGridTextColumn Header="Notes" Binding="{Binding Notes}"/>
                 <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}"/>
-                <DataGridTextColumn Header="Purchase Yr" Binding="{Binding PurchaseDate, StringFormat=\{0:yyyy\}}" />
+                <DataGridTextColumn Header="Purchase Yr" Binding="{Binding PurchaseYear}" />
                 <DataGridTextColumn Header="Serial Number" Binding="{Binding SerialNumber}"/>
                 <DataGridTemplateColumn Header="Update Book">
                     <DataGridTemplateColumn.CellTemplate>
@@ -90,11 +111,11 @@
                         <Label Grid.Row="1" Grid.Column="0" Content="Name"/>
                         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Name}"/>
                         <Label Grid.Row="2" Grid.Column="0" Content="Type"/>
-                        <ComboBox ItemsSource="{Binding Source={x:Static models:GearType.Shelter}}" Grid.Row="2" Grid.Column="1" SelectedItem="{Binding Type}"/>
+                        <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Source={StaticResource GearTypeValues}}" SelectedItem="{Binding Type}"/>
                         <Label Grid.Row="3" Grid.Column="0" Content="Season"/>
-                        <ComboBox Grid.Row="3" Grid.Column="1" Text="{Binding Season}"/>
+                        <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Source={StaticResource SeasonTypeValues}}" SelectedItem="{Binding Season}"/>
                         <Label Grid.Row="4" Grid.Column="0" Content="Condition"/>
-                        <ComboBox Grid.Row="4" Grid.Column="1" Text="{Binding Condition}"/>
+                        <ComboBox Grid.Row="4" Grid.Column="1" ItemsSource="{Binding Source={StaticResource ConditionTypeValues}}" SelectedItem="{Binding Condition}"/>
                         <Label Grid.Row="5" Grid.Column="0" Content="Durable"/>
                         <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding IsDurable}"/>
                         <Label Grid.Row="6" Grid.Column="0" Content="Price"/>

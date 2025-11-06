@@ -17,14 +17,14 @@ namespace Assignment11._3_WPF.Models
     public class OutdoorGear
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
         public GearType Type { get; set; }
         public SeasonType Season { get; set; }
         public ConditionType Condition { get; set; }
         public bool IsDurable { get; set; }
         public decimal Price { get; set; }
         public double WeightInPounds { get; set; }
-        public string Notes { get; set; }
+        public string Notes { get; set; } = "";
         public int Quantity { get; set; } = 1;
         public int PurchaseYear { get; set; }
         public string? SerialNumber { get; set; }

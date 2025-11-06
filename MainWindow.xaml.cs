@@ -38,23 +38,26 @@ namespace Assignment11._3_WPF
 
             Loaded += MainWindow_Loaded;
             OutdoorGearGrid.ItemsSource = _outdoorGears;
+
+            UpdateGearGrid.DataContext = newOutdoorGear;
         }
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                // Test call – replace with actual binding later
-                var items = await _http.GetFromJsonAsync<List<OutdoorGear>>("api/OutdoorGears");
+            await ReloadAsync();
+            //try
+            //{
+            //    // Test call – replace with actual binding later
+            //    var items = await _http.GetFromJsonAsync<List<OutdoorGear>>("api/OutdoorGears");
 
-                MessageBox.Show($"Received {items?.Count} items from API");
+            //    MessageBox.Show($"Received {items?.Count} items from API");
 
-                // Example to set the DataGrid
-                OutdoorGearGrid.ItemsSource = items;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"API Error: {ex.Message}");
-            }
+            //    // Example to set the DataGrid
+            //    OutdoorGearGrid.ItemsSource = items;
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show($"API Error: {ex.Message}");
+            //}
         }
 
         private void UpdateGearforEdit(object sender, RoutedEventArgs e)
@@ -82,6 +85,7 @@ namespace Assignment11._3_WPF
 
                 // Remove from the ObservableCollection
                 _outdoorGears.Remove(gear);
+                await ReloadAsync();
             }
             catch (Exception ex)
             {
@@ -91,8 +95,11 @@ namespace Assignment11._3_WPF
 
         private async void AddGear(object sender, RoutedEventArgs e)
         {
+            
             try
             {
+
+
                 if (string.IsNullOrWhiteSpace(newOutdoorGear.Name))
                 {
                     MessageBox.Show("Name is required.");
@@ -104,13 +111,25 @@ namespace Assignment11._3_WPF
                 var resp = await _http.PostAsJsonAsync("api/OutdoorGears", newOutdoorGear);
                 resp.EnsureSuccessStatusCode();
 
-                var created = await resp.Content.ReadFromJsonAsync<OutdoorGear>();
-                if (created != null)
-                {
-                    _outdoorGears.Add(created);     // update UI
-                    newOutdoorGear = new OutdoorGear();  // clear form
-                    UpdateGearGrid.DataContext = newOutdoorGear;
-                }
+                //if (!resp.IsSuccessStatusCode)
+                //{
+                //    var body = await resp.Content.ReadAsStringAsync();
+                //    MessageBox.Show($"Add failed ({(int)resp.StatusCode}):\n{body}");
+                //    return;
+                //}
+
+                newOutdoorGear = new OutdoorGear();  // clear form
+                UpdateGearGrid.DataContext = newOutdoorGear;
+
+                //var created = await resp.Content.ReadFromJsonAsync<OutdoorGear>();
+                //if (created != null)
+                //{
+                //    _outdoorGears.Add(created);     // update UI
+                //    newOutdoorGear = new OutdoorGear();  // clear form
+                //    UpdateGearGrid.DataContext = newOutdoorGear;
+                //}
+                await ReloadAsync();
+
             }
             catch (Exception ex)
             {
@@ -129,9 +148,11 @@ namespace Assignment11._3_WPF
                 }
                 var resp = await _http.PutAsJsonAsync($"api/OutdoorGears/{selectedGear.Id}", selectedGear);
                 resp.EnsureSuccessStatusCode();
+                await ReloadAsync();
                 MessageBox.Show("Update successful.");
                 newOutdoorGear = new OutdoorGear();
                 UpdateGearGrid.DataContext = newOutdoorGear;
+                selectedGear = null;
             }
             catch (Exception ex)
             {
@@ -139,6 +160,20 @@ namespace Assignment11._3_WPF
             }
         }
 
-        
+        private async Task ReloadAsync()
+        {
+            try
+            {
+                var list = await _http.GetFromJsonAsync<List<OutdoorGear>>("api/OutdoorGears") ?? new();
+                _outdoorGears.Clear();
+                foreach (var g in list) _outdoorGears.Add(g);    
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Load failed: {ex.Message}");
+            }
+        }
+
+
     }
 }
